@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>full scroll</title>
+<style>
+body,html{margin:0;padding:0;height:100%;overflow:hidden;}
+.fs-page{
+	position:relative;
+	height:100%;
+}
+
+.fs-section{
+	position:relative;
+	height:100%;
+	background-color:skyblue;
+}
+.fs-content{
+	position: absolute;
+	top:50%;
+	left:0;
+	width:100%;
+}
+.fs-page-absolute{
+	position: absolute;
+	left:0;
+	top:0;
+	width:100%;
+
+}
+
+
+
+
+
+
+.fs-section:nth-child(2n){
+	background-color:#fff;
+}
+
+.section{
+font-size:50px;text-align: center;margin:0 auto;
+
+}
+</style>
+</head>
+<body>
+	
+	<div class="container" id="full-scroll">
+		<div class="section">
+			<div style="">0</div>
+		</div>
+
+		<div class="section">
+			<div style="">1</div>
+		</div>
+		<div class="section">
+			<div>2</div>
+		</div>
+		<div class="section">
+			<div>3</div>
+		</div>
+		<div class="section">
+			<div>4</div>
+		</div>
+		<div class="section">
+			<div>5</div>
+		</div>
+		<div class="section">
+			<div>6</div>
+		</div>
+
+	</div>
+
+<script src="http://tvgame.qq.com/js/public/jquery-1.11.0.min.js"></script>
+<script src="./jquery.fullscroll.js"></script>
+<script>
+
+	$("#full-scroll").fullscroll({
+		beforeMove : function(to,from){
+			console.log("##开始移动  "+from+" > "+to)
+		},
+		afterMove : function(to,from){
+			console.log("####移动完成  "+from+" > "+to)
+		}
+
+
+	});
+
+
+</script>
+</body>
+</html>
