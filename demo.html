@@ -4,45 +4,21 @@
 <meta charset="UTF-8">
 <title>full scroll</title>
 <style>
-body,html{margin:0;padding:0;height:100%;overflow:hidden;}
-.fs-page{
-	position:relative;
-	height:100%;
+body,html{
+	margin:0;padding:0;
 }
-
-.fs-section{
-	position:relative;
-	height:100%;
-	background-color:skyblue;
-}
-.fs-content{
-	position: absolute;
-	top:50%;
-	left:0;
-	width:100%;
-}
-.fs-page-absolute{
-	position: absolute;
-	left:0;
-	top:0;
-	width:100%;
-
-}
-
-
-
-
-
 
 .fs-section:nth-child(2n){
 	background-color:#fff;
 }
 
 .section{
-font-size:50px;text-align: center;margin:0 auto;
-
+	font-size:50px;
+	text-align: center;
+	margin:0 auto;
 }
 </style>
+<link rel="stylesheet" href="full-scroll.css">
 </head>
 <body>
 	
@@ -77,6 +53,7 @@ font-size:50px;text-align: center;margin:0 auto;
 <script>
 
 	$("#full-scroll").fullscroll({
+		
 		beforeMove : function(to,from){
 			console.log("##开始移动  "+from+" > "+to)
 		},
