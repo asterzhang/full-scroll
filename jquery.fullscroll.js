@@ -7,8 +7,8 @@ $.fn.fullscroll = function(options){
 		sectionSelector: '.section',   // 与页面自身class冲突时 设置新的class 
 		middle:true,  // 是否垂直居中  
 		loop: false,   // 是否循环
-		animationDuration: 700,  // 动画过渡时间
-		animationCD:500,
+		animationDuration: 1000,  // 建议不要小于1000 
+		animationCD:400, // 滚动时 冷却时间  
 		easing:'swing',   //动画的方式   jquery.easings.min.js    js实现
 		easingcss3: 'ease',  //css3动画的方式	
 		keyboard : true,   //
@@ -23,28 +23,11 @@ $.fn.fullscroll = function(options){
 
 	var settings = $.extend(defaults,options);
 
-	$.support.displayTable = false;
-	$.css3translate = false;
 	
+	var isScrolling = false,
+		  isResizing = false,
+		  sectionLength = $(settings.sectionSelector).length;
 
-
-	var isMoving = false;
-	var isScrolling = false;  
-	var isResizing = false;
-	var scrollID;
-	var movingID;
-	var sectionLastIndex = $(settings.sectionSelector).length-1;
-
-
-
-	$.support.css3translate = supportCSS3Translate();
-
-	if(!$.support.css3translate){
-		elem.addClass("fs-page-absolute")
-	}
-
-
-	// 初始化处理
 	
 	var elem =$(this);	
 
@@ -53,7 +36,7 @@ $.fn.fullscroll = function(options){
 	$(settings.sectionSelector).addClass("fs-section").wrapInner("<div class='fs-content'></div>").eq(0).addClass("active");
 
 
-	// 是否对section内容做居中处理
+	// middle the content use negative margin-top
 	if(settings.middle){	
 		$(".fs-content").each(function(){
 			var marginTop = -1*$(this).height()/2+"px";
@@ -61,57 +44,93 @@ $.fn.fullscroll = function(options){
 		});
 	}
 
+	$.support.css3translate = supportCSS3Translate();
+
+	if(!$.support.css3translate){
+		elem.addClass("fs-page-absolute")
+	}
+
+	// circle nav
+	if(settings.pagination){
+		
+		initPagination();
+
+		$(".fs-pagination li a").on("click",function(e){
+			var index = $(this).parent("li").index();
+			elem.moveTo(index)
+		})
+	}
+
+
+	function initPagination(){
+
+		$("body").append('<div class="fs-pagination"></div>');
+		var pagination = $(".fs-pagination");
+
+		var html = "<ul>";
+		// TODO add extral class name
+		for(var i=0;i<sectionLength;i++){
+			html += '<li><a href="javascript:;"></a></li>';
+		}
+		html += "</ul>";
+
+		pagination.append(html).find("li").eq(0).addClass("active");
+		pagination.css("marginTop",pagination.height()/2*-1)
+
+	}
+
 
 
 	$.fn.moveTo = function(to,from){
 
+		if(to == from){ return false;}
+		
+		if(from==undefined){
+			from = $(".fs-section.active").index();
+		}
 
-		if(!isMoving && to!=from){
+		// before move callback
+		if(typeof settings.beforeMove  === "function") {
+			settings.beforeMove(to,from);
+		}
 
-			isMoving = true;
+		if(settings.pagination){
+			$(".fs-pagination li").removeClass("active").eq(to).addClass("active");
+		}
 
-			if(from==undefined){
-				from = $(".fs-section.active").index();
+		if(settings.menu){
+
+		}
+
+		$(".fs-section").removeClass("active").eq(to).addClass("active");
+
+		var dest = -to*100+"%"
+
+		if($.support.css3translate){
+			
+			// use css3 translate
+			elem.css({
+				transform:"translateY("+dest+")",
+				transition: "all " + settings.animationDuration + "ms " + settings.easingcss3
+			});
+
+			// very powerful
+			if(typeof settings.afterMove === "function"){
+				elem.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function() {
+      		settings.afterMove(to,from);
+   			});
 			}
-
-			// 移动前回调
-			if(typeof settings.beforeMove  === "function") {
-				settings.beforeMove(to,from);
-			}
-
 			
 
-			$(".fs-section").removeClass("active").eq(to).addClass("active");
-
-			var dest = -to*100+"%"
-
-			if($.support.css3translate){
-				
-				elem.css({
-					transform:"translateY("+dest+")",
-					transition: "all " + settings.animationDuration + "ms " + settings.easingcss3
-				});
-
+		} else {
+			
+			// use jQuery elem.animate function
+			elem.animate({"top":dest},settings.animationDuration,settings.easing,function(){
 				if(typeof settings.afterMove === "function"){
-					elem.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function() {
-        		settings.afterMove(to,from);
-     			});
+					settings.afterMove(to,from);
 				}
-				
+			})
 
-			} else {
-				
-				elem.animate({"top":dest},settings.animationDuration,settings.easing,function(){
-					// 移动完成后回调
-					if(typeof settings.afterMove === "function"){
-						settings.afterMove(to,from);
-					}
-				})// jquery top实现
-
-			}
-
-			clearTimeout(movingID)
-			movingID = setTimeout(function(){isMoving=false},settings.animationDuration+settings.animationCD)
 		}
 
 
@@ -139,7 +158,6 @@ $.fn.fullscroll = function(options){
 
 	$.fn.moveUp = function(){
 
-
 		var current =  $(".fs-section.active")
 
 		var next = current.next(".fs-section");
@@ -149,63 +167,47 @@ $.fn.fullscroll = function(options){
 		} 
 			
 		if(next.length){
-
 			var from = current.index()
 			var to = next.index();
-
-			//console.log(to)
-
 			$.fn.moveTo(to,from);
 		}
 
 	}
 
 
+	// TODO 
 	function resize(){
-
 		var winWidth = $(window).width(),
 			winHeight = $(window).height();
-
-
 	};
 
-	
 
-
-	/**
-	 * Detecting mousewheel scrolling
-	 *
-	 * http://blogs.sitepointstatic.com/examples/tech/mouse-wheel/index.html
-	 * http://www.sitepoint.com/html5-javascript-mouse-wheel/
-	 */
 
 	function mouseWheelHandler(e) {
 
 		e.preventDefault();
 
-		if (!isScrolling) { 
+		if (!isScrolling) {
 
-			isScrolling = true;
-				
+			isScrolling = true; 
+
+			// TODO 
     	var delta = e.originalEvent.wheelDelta || -e.originalEvent.detail || -e.originalEvent.detailY;
-    
 			if (delta < 0) {
 				elem.moveUp();
-				console.log("moveup");
 			}else {
 				elem.moveDown()
-				console.log("movedown")
 			}
 
-			clearTimeout(scrollID);
-			scrollID = setTimeout(function(){isScrolling = false},200)
-		}
-		
-		
+			scrollID = setTimeout(function(){isScrolling = false},settings.animationDuration+settings.animationCD)
+
+		}	
 		
 	}
 
 
+
+	// TODO  FF bug fix
 	$(document).on('wheel mousewheel DOMMouseScroll',mouseWheelHandler);
 
 
@@ -222,7 +224,7 @@ $.fn.fullscroll = function(options){
         	} else if(which==36){ // Home
         		elem.moveTo(0)
         	} else if(which==35){ // End
-        		elem.moveTo(sectionLastIndex);
+        		elem.moveTo(sectionLength-1);
         	}
         }
       });
@@ -254,11 +256,6 @@ $.fn.fullscroll = function(options){
 
 			return (has3d !== undefined && has3d.length > 0 && has3d !== "none");
 		}
-
-
-
-
-	
 
 
 }
