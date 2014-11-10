@@ -38,9 +38,9 @@ $.fn.fullscroll = function(options){
 		});
 	}
 
-	$.support.css3translate = supportCSS3Translate();
+	$.support.css3translate3d = supportCSS3Translate3d();
 
-	if(!$.support.css3translate){
+	if(!$.support.css3translate3d){
 		elem.addClass("fs-page-absolute")
 	}
 
@@ -100,12 +100,20 @@ $.fn.fullscroll = function(options){
 
 		var dest = -to*100+"%"
 
-		if($.support.css3translate){
+		if($.support.css3translate3d){
 			
-			// use css3 translate
+			// use css3 translate3D which can use hardware acceleration
 			elem.css({
-				transform:"translateY("+dest+")",
-				transition: "all " + settings.animationDuration + "ms " + settings.easingcss3
+				"-webkit-tranform":"translate3d(0,"+dest+",0)",
+				"-webkit-transition":"all " + settings.animationDuration + "ms " + settings.easingcss3,
+				"-o-tranform":"translate3d(0,"+dest+",0)",
+				"-o-transition":"all " + settings.animationDuration + "ms " + settings.easingcss3,
+				"-moz-transform-tranform":"translate3d(0,"+dest+",0)",
+				"-moz-transition":"all " + settings.animationDuration + "ms " + settings.easingcss3,
+				"-ms-tranform":"translate3d(0,"+dest+",0)",
+				"-ms-transition":"all " + settings.animationDuration + "ms " + settings.easingcss3,
+				"transform":"translate3d(0,"+dest+",0)",
+				"transition": "all " + settings.animationDuration + "ms " + settings.easingcss3
 			});
 
 			// very powerful
@@ -183,16 +191,26 @@ $.fn.fullscroll = function(options){
 
 		if (!isScrolling) {
 
-			isScrolling = true; 
+			
+			var current = $(".fs-section.active").index();
 
-			// TODO 
-    	var delta = e.originalEvent.wheelDelta || -e.originalEvent.detail || -e.originalEvent.detailY;
+			
+			// TODO 鼠标事件的兼容处理
+    	var delta = e.originalEvent.wheelDelta || -e.originalEvent.detail;
+			
 			if (delta < 0) {
-				elem.moveUp();
-			}else {
+				if(!settings.loop && current == sectionLength-1){
+			 		return false;
+			 	}
+			 	elem.moveUp();
+			}else if(delta>0 && current){
+				if(!settings.loop && current == 0){
+			 		return false;
+			 	}
 				elem.moveDown()
 			}
 
+			isScrolling = true; 
 			scrollID = setTimeout(function(){isScrolling = false},settings.animationDuration+settings.animationCD)
 
 		}	
@@ -202,54 +220,55 @@ $.fn.fullscroll = function(options){
 
 
 	// TODO  FF bug fix
-	$(document).on('wheel mousewheel DOMMouseScroll',mouseWheelHandler);
-
+	// TODO 是否绑定Moz。。。事件
+	$(document).on('mousewheel DOMMouseScroll',mouseWheelHandler);
 
 
 	if(settings.keyboard == true) {
-      $(document).keydown(function(e) {
-        var tag = e.target.tagName.toLowerCase();
-        var which = e.which;
-        if(tag !== 'input' && tag !== 'textarea'){
-        	if(which == 33 || which ==37 || which==38){ // 33 page up; 37 left; 38 up
-        		elem.moveDown();
-        	} else if(which == 32|| which ==34 || which==39 || which==40 ){ //32 space; 34 page down; 39 right; 40 down
-        		elem.moveUp();
-        	} else if(which==36){ // Home
-        		elem.moveTo(0)
-        	} else if(which==35){ // End
-        		elem.moveTo(sectionLength-1);
-        	}
-        }
-      });
-    }
-
-
-    function supportCSS3Translate() {
-			var el = document.createElement('p'),
-				has3d,
-				transforms = {
-					'webkitTransform':'-webkit-transform',
-					'OTransform':'-o-transform',
-					'msTransform':'-ms-transform',
-					'MozTransform':'-moz-transform',
-					'transform':'transform'
-				};
-
-			// Add it to the body to get the computed style.
-			document.body.insertBefore(el, null);
-
-			for (var t in transforms) {
-				if (el.style[t] !== undefined) {
-					el.style[t] = "translate3d(1px,1px,1px)";
-					has3d = window.getComputedStyle(el).getPropertyValue(transforms[t]);
+		$(document).keydown(function(e) {
+      var tag = e.target.tagName.toLowerCase();
+			var which = e.which;
+			if(tag !== 'input' && tag !== 'textarea'){
+				if(which == 33 || which ==37 || which==38){ // 33 page up; 37 left; 38 up
+					elem.moveDown();
+				} else if(which == 32|| which ==34 || which==39 || which==40 ){ //32 space; 34 page down; 39 right; 40 down
+					elem.moveUp();
+				} else if(which==36){ // Home
+					elem.moveTo(0)
+				} else if(which==35){ // End
+					elem.moveTo(sectionLength-1);
 				}
 			}
+		});
+	}
 
-			document.body.removeChild(el);
 
-			return (has3d !== undefined && has3d.length > 0 && has3d !== "none");
+	function supportCSS3Translate3d() {
+		var el = document.createElement('p'),
+		has3d,
+		transforms = {
+			'webkitTransform':'-webkit-transform',
+			'OTransform':'-o-transform',
+			'msTransform':'-ms-transform',
+			'MozTransform':'-moz-transform',
+			'transform':'transform'
+		};
+
+		// Add it to the body to get the computed style.
+		document.body.insertBefore(el, null);
+
+		for (var t in transforms) {
+			if (el.style[t] !== undefined) {
+				el.style[t] = "translate3d(1px,1px,1px)";
+				has3d = window.getComputedStyle(el).getPropertyValue(transforms[t]);
+			}
 		}
+
+		document.body.removeChild(el);
+		return (has3d !== undefined && has3d.length > 0 && has3d !== "none");
+	}
+
+
 
 
 }
