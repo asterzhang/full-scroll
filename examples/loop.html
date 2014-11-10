@@ -10,6 +10,10 @@ body,html{
 
 body{font-size:14px;}
 
+.container{
+	height:500px;
+
+}
 
 
 
@@ -63,7 +67,7 @@ body{font-size:14px;}
 
 
 </style>
-<link rel="stylesheet" href="full-scroll.css">
+<link rel="stylesheet" href="../full-scroll.css">
 </head>
 <body>
 	
@@ -99,23 +103,12 @@ body{font-size:14px;}
 		</div>
 	</div>
 
-<script src="http://tvgame.qq.com/js/public/jquery-1.11.0.min.js"></script>
-<script src="./jquery.fullscroll.js"></script>
+<script src="../lib/jquery-1.11.0.min.js"></script>
+<script src="../jquery.fullscroll.js"></script>
 <script>
-
 	$("#full-scroll").fullscroll({
-		normalSelector:".disable-scroll",
-		beforeMove : function(to,from){
-			console.log("##开始移动  "+from+" > "+to)
-		},
-		afterMove : function(to,from){
-			console.log("####移动完成  "+from+" > "+to)
-		}
-
-
+		loop:true
 	});
-
-
 </script>
 </body>
 </html>

@@ -224,7 +224,7 @@ $.fn.fullscroll = function(options){
 	$(document).on('mousewheel DOMMouseScroll',mouseWheelHandler);
 
 	if(settings.normalSelector){
-		$(settings.normalSelector).on('mousewheel DOMMouseScroll',function(e){
+		$("body").on('mousewheel DOMMouseScroll',settings.normalSelector,function(e){
 			e.preventDefault();
 			return false;
 		})
