@@ -4,37 +4,31 @@
 $.fn.fullscroll = function(options){
 
 	var defaults = {
-		sectionSelector: '.section',   // 与页面自身class冲突时 设置新的class 
-		middle:true,  // 是否垂直居中  
-		loop: false,   // 是否循环
-		animationDuration: 1000,  // 建议不要小于1000 
-		animationCD:400, // 滚动时 冷却时间  
-		easing:'swing',   //动画的方式   jquery.easings.min.js    js实现
-		easingcss3: 'ease',  //css3动画的方式	
-		keyboard : true,   //
-		menu:false,   //
-		pagination:true,   //
-		beforeMove:null,
+		sectionSelector: '.section', 
+		middle:true,  // middle the content in sections  
+		loop: false,   // 
+		animationDuration: 1000,  // suggest bigger than 1000ms
+		animationCD:400, // CD  
+		easing:'swing',   // jquery.easings.min.js
+		easingcss3: 'ease',  // 	
+		keyboard : true,   // bind keyboard event
+		menu:false,   // TODO
+		pagination:true,   // circle navi
+		beforeMove:null, 
 		afterMove:null,
-
-		// TODO
-		normalElems:'' //todo 这些元素上滚动  不触发整屏滚动   
+		normalElems:'' //	TODO elem without handling the mousewheel 
 	}
 
 	var settings = $.extend(defaults,options);
-
 	
 	var isScrolling = false,
 		  isResizing = false,
-		  sectionLength = $(settings.sectionSelector).length;
-
-	
-	var elem =$(this);	
+		  sectionLength = $(settings.sectionSelector).length,
+		  elem =$(this);	
 
 	elem.addClass("fs-page");
 
 	$(settings.sectionSelector).addClass("fs-section").wrapInner("<div class='fs-content'></div>").eq(0).addClass("active");
-
 
 	// middle the content use negative margin-top
 	if(settings.middle){	
@@ -260,4 +254,4 @@ $.fn.fullscroll = function(options){
 
 }
 
-})(jQuery)
+})(window.jQuery)

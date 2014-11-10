@@ -13,6 +13,6 @@ live demo:http://yuqin.github.io/full-scroll/demo.html
 
 1. FF mousewheel bug.
 2. Element not fire the mouse wheel event,like map,light box etc.
-3. When the section height is lower than the setting min-height,then switch the page to normal scroll,rathor than automatic full page scroll.
+3. Resize,When the section height is lower than the setting min-height,then switch the page to normal scroll,rathor than automatic full page scroll.
 4. menu.
 
