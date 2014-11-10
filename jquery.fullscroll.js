@@ -16,7 +16,7 @@ $.fn.fullscroll = function(options){
 		pagination:true,   // circle navi
 		beforeMove:null, 
 		afterMove:null,
-		normalElems:'' //	TODO elem without handling the mousewheel 
+		normalSelector:'' //	elem without fire the mousewheel event
 	}
 
 	var settings = $.extend(defaults,options);
@@ -222,6 +222,13 @@ $.fn.fullscroll = function(options){
 	// TODO  FF bug fix
 	// TODO 是否绑定Moz。。。事件
 	$(document).on('mousewheel DOMMouseScroll',mouseWheelHandler);
+
+	if(settings.normalSelector){
+		$(settings.normalSelector).on('mousewheel DOMMouseScroll',function(e){
+			e.preventDefault();
+			return false;
+		})
+	}
 
 
 	if(settings.keyboard == true) {

@@ -86,9 +86,16 @@ body{font-size:14px;}
 		</div>
 		<div class="section section-05">
 			<div>5</div>
+			<div class="disable-scroll">
+				disable-scroll <br>
+				disable-scroll <br>
+				disable-scroll <br>
+				disable-scroll
+			</div>
 		</div>
 		<div class="section section-06">
 			<div>6</div>
+
 		</div>
 	</div>
 
@@ -97,7 +104,7 @@ body{font-size:14px;}
 <script>
 
 	$("#full-scroll").fullscroll({
-		
+		normalSelector:".disable-scroll",
 		beforeMove : function(to,from){
 			console.log("##开始移动  "+from+" > "+to)
 		},
