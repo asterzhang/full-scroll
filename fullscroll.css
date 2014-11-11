@@ -1,0 +1,59 @@
+body,html{
+	height:100%;
+	overflow:hidden;
+}
+.container{
+	height:500px;
+
+}
+.fs-page{
+	position:relative;
+	height:100%;
+}
+
+.fs-section{
+	position:relative;
+	height:100%;
+}
+.fs-content{
+	position: absolute;
+	top:50%;
+	left:0;
+	width:100%;
+}
+.fs-page-absolute{
+	position: absolute;
+	left:0;
+	top:0;
+	width:100%;
+}
+
+.fs-pagination{
+	position:fixed;
+	right:25px;
+	top:50%;
+	margin-top:-50px;
+}
+.fs-pagination ul{
+	list-style:none;
+	margin:0;
+	padding:0;
+	margin-top:10px;
+
+}
+
+.fs-pagination li{
+	margin:0;
+	padding:0;
+	margin-bottom:10px;
+}
+.fs-pagination li a{
+	display:block;
+	width:8px;
+	height:8px;
+	border-radius: 50%;
+	border:1px solid #aaa;
+}
+.fs-pagination li.active a{
+	background-color: #aaa;
+}
