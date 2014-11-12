@@ -44,17 +44,18 @@ onepage-scroll：基本没人在维护了，bug比较多，优化的空间也很
 ```
 
 就这么简单，当然也可以根据需要传到相关的参数。
-sectionSelector：section对应的选择器，默认为.section
-middle：section中的内容是否垂直居中  
-loop: 是否循环滚动，即从第一屏滚动到最后一屏，或者最后一屏滚动到第一屏。
-animationDuration: 滚动动画的执行时间，建议不要小于1000
-easing: 如果浏览器不支持translate3d，则使用jQuery实现滚动动画，如果需要使用更多方式的动画，请使用jquery.easing.js
-easingcss3: CSS动画的实现方式
-keyboard: 是否绑定键盘事件
-pagination: 是否需要右侧的圆圈导航
-beforeMove: 动画开始前回调
-afterMove: 动画完成后回调
-normalSelector: 这些元素上滚动鼠标，不触发整屏滚动事件，比如map，弹层。
+
+* sectionSelector：section对应的选择器，默认为.section
+* middle：section中的内容是否垂直居中  
+* loop: 是否循环滚动，即从第一屏滚动到最后一屏，或者最后一屏滚动到第一屏。
+* animationDuration: 滚动动画的执行时间，建议不要小于1000
+* easing: 如果浏览器不支持translate3d，则使用jQuery实现滚动动画，如果需要使用更多方式的动画，请使用jquery.easing.js
+* easingcss3: CSS动画的实现方式
+* keyboard: 是否绑定键盘事件  
+* pagination: 是否需要右侧的圆圈导航
+* beforeMove: 动画开始前回调
+* afterMove: 动画完成后回调
+* normalSelector: 这些元素上滚动鼠标，不触发整屏滚动事件，比如map，弹层。
 
 
 自定义

@@ -141,14 +141,16 @@
 
     $.fn.moveDown = function() {
 
-      var current = $(".fs-section.active") var prev = current.prev(".fs-section");
+      var current = $(".fs-section.active");
+      var prev = current.prev(".fs-section");
 
       if (!prev.length) {
         settings.loop && (prev = $(".fs-section").last());
       }
 
       if (prev.length) {
-        var from = current.index() var to = prev.index();
+        var from = current.index();
+        var to = prev.index();
         $.fn.moveTo(to, from);
       }
 
@@ -165,7 +167,8 @@
       }
 
       if (next.length) {
-        var from = current.index() var to = next.index();
+        var from = current.index();
+        var to = next.index();
         $.fn.moveTo(to, from);
       }
 

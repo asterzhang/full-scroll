@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <title>full scroll</title>
@@ -8,13 +8,11 @@ body,html{
 	margin:0;padding:0;
 }
 
-body{font-size:14px;}
+body{font-size:14px;font-family: "Microsoft Yahei"}
 
 .container{
 	height:500px;
-
 }
-
 
 .section{	
 	text-align: center;
@@ -25,21 +23,19 @@ body{font-size:14px;}
 }
 
 .section-01 h1 {
-	font-family: Helvetica, Arial, sans-serif;
 	font-size: 6.0em;
 	color: #1babb7;
 	margin-top:0;
 }
 .section-01 p{
 	text-align:center;
-	font-family: Helvetica, Arial, sans-serif;
 	font-size: 1.4em;
 	color: #333a3e;
 }
 
 
 .section-02{
-	font-size:60px;
+	font-size:30px;
 	background-color: #1babb7;
 }
 
@@ -73,38 +69,40 @@ body{font-size:14px;}
 		<div class="section section-01">
 			<div>
 				<h1>full scroll</h1>
-				<p>A jQuery full-scrolling plugin which supported all browers.</p>
+				<p>A jQuery full-scrolling plugin which supports all browers.</p>
 			</div>
 		</div>
 		<div class="section section-02">
-			<h2>How to use</h2>
-			<h2>To use how</h2>
+			<h2>
+				快速搭建整屏滚动站点 兼容所有PC浏览器
+			</h2>
 		</div>
 		<div class="section section-03">
-			<div>3</div>
+			<div>仅300行代码</div>
 		</div>
 		<div class="section section-04">
-			<div>4</div>
+			<div class="disable-scroll" style="width:500px;background-color: skyblue;margin:0 auto">
+				disable scroll zone<br>			
+			</div>
 		</div>
 		<div class="section section-05">
-			<div>5</div>
-			<div class="disable-scroll">
-				disable-scroll <br>
-				disable-scroll <br>
-				disable-scroll <br>
-				disable-scroll
+			<div>
+				支持方向键、空格键、Home、End。
 			</div>
 		</div>
 		<div class="section section-06">
-			<div>6</div>
-
+			<div>可循环的 继续向下滚动</div>
+			<a style="color:#fff" href="#">复杂一点的demo</a>
 		</div>
 	</div>
 
 <script src="../lib/jquery-1.11.0.min.js"></script>
 <script src="../jquery.fullscroll.js"></script>
 <script>
-	$("#full-scroll").fullscroll();
+	$("#full-scroll").fullscroll({
+		loop:true,
+		normalSelector:".disable-scroll"
+	});
 </script>
 </body>
 </html>
