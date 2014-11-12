@@ -2,7 +2,7 @@
 
 full scroll，又一个快速实现整屏滚动的jQuery插件，兼容所有浏览器。
 
-live demo:http://yuqin.github.io/full-scroll/index.html
+live demo:http://yuqin.github.io/full-scroll/demo.html
 
 
 ## 为什么要写这个插件
